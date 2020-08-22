@@ -1,14 +1,16 @@
-import React, { useState, useEffect, useHistory, createContext } from "react";
+import React, { useState, useEffect, createContext } from "react";
 import loginService from "../services/login";
 import noteService from "../services/notes";
+import { useHistory } from "react-router-dom";
 
-export const UserContext = createContext("Hello");
+export const LoginContext = createContext("Hello");
 
-export const UserProvider = props => {
+export const LoginProvider = props => {
   const [user, setUser] = useState(null);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState(null);
+  let history = useHistory([]);
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedNoteappUser");
@@ -19,9 +21,9 @@ export const UserProvider = props => {
     }
   }, []);
 
-  let history = useHistory();
   const handleLogin = async e => {
     e.preventDefault();
+
     try {
       const user = await loginService.login({
         username,
@@ -35,6 +37,7 @@ export const UserProvider = props => {
       setUsername("");
       setPassword("");
       history.push("/");
+      console.log(history);
     } catch (exception) {
       setErrorMessage("Wrong credentials");
       setTimeout(() => {
@@ -49,7 +52,7 @@ export const UserProvider = props => {
     history.push("/");
   };
 
-  // TODO: useMemo
+  // OPTIONAL: useMemo
   const value = {
     user,
     username,
@@ -57,12 +60,13 @@ export const UserProvider = props => {
     password,
     setPassword,
     handleLogin,
-    handleLogout
+    handleLogout,
+    errorMessage
   };
 
   return (
-    <UserContext.Provider value={"Hello2"}>
+    <LoginContext.Provider value={value}>
       {props.children}
-    </UserContext.Provider>
+    </LoginContext.Provider>
   );
 };

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import noteService from "../services/notes";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
@@ -38,7 +37,7 @@ const NoteForm = ({ createNote }) => {
             value={content}
             onChange={e => setContent(e.target.value)}
           />
-          <Button variant="primary" id="new-note-save" type="submit">
+          <Button variant="success" id="new-note-save" type="submit">
             Save
           </Button>
         </Form.Group>
