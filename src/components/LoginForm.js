@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import PropTypes from "prop-types";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Alert from "react-bootstrap/Alert";
+import { UserContext } from "../context/UserContext";
 
 const LoginForm = ({
   handleLogin,
@@ -12,28 +13,30 @@ const LoginForm = ({
   setPassword,
   errorMessage
 }) => {
+  const context = useContext(UserContext);
   return (
     <>
       <h2>Login</h2>
       {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
-      <Form onSubmit={handleLogin}>
+
+      <Form onSubmit={context.handleLogin}>
         <Form.Group>
           <Form.Label> Username </Form.Label>
           <Form.Control
             id="username"
             type="text"
-            value={username}
+            value={context.username}
             name="username"
-            onChange={e => setUsername(e.target.value)}
+            onChange={e => context.setUsername(e.target.value)}
           />
           <Form.Label>Password </Form.Label>
 
           <Form.Control
             id="password"
             type="password"
-            value={password}
+            value={context.password}
             name="password"
-            onChange={e => setPassword(e.target.value)}
+            onChange={e => context.setPassword(e.target.value)}
           />
 
           <Button variant="primary" id="login-btn" type="submit">
